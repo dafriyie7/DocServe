@@ -13,28 +13,22 @@ Create and work on feature branches:
 
 User Signup & Login with Account Verification:
 
-
 git flow feature start user-authentication
 Develop the feature and commit your changes.
-
 
 git add .
 git commit -m "Implement user signup, login, and account verification"
 Finish the feature.
 
-
 git flow feature finish user-authentication
 Password Reset Feature:
-
 
 git flow feature start password-reset
 Develop the feature and commit your changes.
 
-
 git add .
 git commit -m "Implement password reset functionality"
 Finish the feature.
-
 
 git flow feature finish password-reset
 Feed Page with Downloadable Files:
