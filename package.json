@@ -27,14 +27,6 @@
     "nodemon": "^3.1.4"
   },
   "keywords": [],
-  "author": "Daniel Afriyie",
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/dafriyie7/DocServe.git"
-  },
-  "bugs": {
-    "url": "https://github.com/dafriyie7/DocServe/issues"
-  },
-  "homepage": "https://github.com/dafriyie7/DocServe#readme"
+  "author": "",
+  "license": "ISC"
 }

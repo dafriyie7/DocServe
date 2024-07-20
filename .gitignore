@@ -1,4 +1,5 @@
 node_modules
-instructions
 .env
+auto-publish.sh
+instructions
 keys
