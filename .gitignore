@@ -1,0 +1,5 @@
+node_modules
+.env
+auto-publish.sh
+instructions
+keys
