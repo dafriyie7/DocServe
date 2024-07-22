@@ -3,14 +3,14 @@ const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.redirect('login');
+  res.redirect('/login');
 };
 
 const isAdmin = (req, res, next) => {
   if (req.isAuthenticated() && req.user.isAdmin) {
     return next();
   }
-  res.redirect('');
+  res.redirect('/');
 };
 
 module.exports = { isAuthenticated, isAdmin };
