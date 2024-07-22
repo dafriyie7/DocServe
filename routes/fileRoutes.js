@@ -11,11 +11,6 @@ const {
     renderDashboard
 } = require('../controllers/fileController');
 
-// homepage route
-router.get('/', (req, res) => {
-    res.redirect('/auth/login');
-});
-
 router.get('/dashboard', Authenticated, renderDashboard);
 router.post('/files/upload', Authenticated, isAdmin, uploadFile);
 router.delete('/files/delete/:id', Authenticated, isAdmin, deleteFile);
