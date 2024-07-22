@@ -4,6 +4,19 @@ const fs = require('fs');
 const path = require('path');
 const nodemailer = require('nodemailer');
 
+//render dashboard
+const renderDashboard = asyncHandler(
+  async (req, res) => {
+  try {
+    const files = await File.find({});
+    res.render('dashboard', /*{ files, isAdmin: req.user.isAdmin }*/);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error');
+  }
+}
+)
+
 // @desc Get all files
 // @route GET /files
 // @access public
@@ -145,5 +158,6 @@ module.exports = {
   uploadFile,
   downloadFile,
   deleteFile,
-  shareFile
+  shareFile,
+  renderDashboard
 };

@@ -1,39 +1,32 @@
 const express = require('express');
 const router = express.Router();
-const { isAuthenticated, isAdmin } = require('../middleware/authMiddleware');
+const { Authenticated, isAdmin } = require('../middleware/authMiddleware');
 const {
     getFiles,
     searchFile,
     uploadFile,
     downloadFile,
     deleteFile,
-    shareFile
+    shareFile,
+    renderDashboard
 } = require('../controllers/fileController');
 
 // Route to render the dashboard
-router.get('/dashboard', isAuthenticated, async (req, res) => {
-  try {
-    const files = await File.find({});
-    res.render('dashboard', { files, isAdmin: req.user.isAdmin });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Server Error');
-  }
-});
+router.get('/dashboard', Authenticated, renderDashboard);
 
 // Route for file upload (Admin only)
-router.post('/files/upload', isAuthenticated, isAdmin, uploadFile);
+router.post('/files/upload', Authenticated, isAdmin, uploadFile);
 
 // Route for file deletion (Admin only)
-router.delete('/files/delete/:id', isAuthenticated, isAdmin, deleteFile);
+router.delete('/files/delete/:id', Authenticated, isAdmin, deleteFile);
 
 // Route for file download
-router.get('/files/download/:id', isAuthenticated, downloadFile);
+router.get('/files/download/:id', Authenticated, downloadFile);
 
 // Route for file sharing via email
-router.post('/files/share/:id', isAuthenticated, shareFile);
+router.post('/files/share/:id', Authenticated, shareFile);
 
 // Route for file search
-router.get('/files/search', isAuthenticated, searchFile);
+router.get('/files/search', Authenticated, searchFile);
 
 module.exports = router;

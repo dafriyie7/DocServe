@@ -4,6 +4,7 @@ const asyncHandler = require('express-async-handler');
 const { v4: uuidv4 } = require('uuid');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcryptjs');
+const {isAuthenticated, isdamin} = require('../middleware/authMiddleware')
 
 // Render Signup Page
 const renderSignup = (req, res) => {
@@ -13,7 +14,7 @@ const renderSignup = (req, res) => {
 // Render Login Page
 const renderLogin = (req, res) => {
     if (isAuthenticated) {
-        res.redirect('dashboard');
+        res.redirect('/files/dashboard');
     }
     res.render('login');
 };
