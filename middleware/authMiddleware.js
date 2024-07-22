@@ -1,9 +1,9 @@
 // middleware/authMiddleware.js
-const isAuthenticated = (req, res, next) => {
+const Authenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.redirect('/login');
+  res.redirect('/auth/login');
 };
 
 const isAdmin = (req, res, next) => {
@@ -13,4 +13,4 @@ const isAdmin = (req, res, next) => {
   res.redirect('/');
 };
 
-module.exports = { isAuthenticated, isAdmin };
+module.exports = { Authenticated, isAdmin };
