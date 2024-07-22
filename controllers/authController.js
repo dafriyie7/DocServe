@@ -5,21 +5,25 @@ const { v4: uuidv4 } = require('uuid');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcryptjs');
 
+// Render Signup Page
 const renderSignup = (req, res) => {
     res.render('signup');
 };
 
+// Render Login Page
 const renderLogin = (req, res) => {
+    if (isAuthenticated) {
+        res.redirect('dashboard');
+    }
     res.render('login');
 };
 
+// Render Forgot Password Page
 const renderForgotPassword = (req, res) => {
     res.render('forgot-password');
 };
 
-// @desc Register user
-// @route POST /auth/signup
-// @access public
+// Register user
 const signup = asyncHandler(async (req, res) => {
     const { username, email, password } = req.body;
 
@@ -72,18 +76,14 @@ const signup = asyncHandler(async (req, res) => {
     }
 });
 
-// @desc Login user
-// @route POST /auth/login
-// @access public
+// Login user
 const login = passport.authenticate('local', {
     successRedirect: '/files/dashboard',
     failureRedirect: '/auth/login',
     failureFlash: true
 });
 
-// @desc Logout user
-// @route GET /auth/logout
-// @access private
+// Logout user
 const logout = (req, res) => {
     req.logout((err) => {
         if (err) {
@@ -94,9 +94,7 @@ const logout = (req, res) => {
     });
 };
 
-// @desc Confirm email to reset password
-// @route POST /auth/forgot-password
-// @access public
+// Confirm email to reset password
 const resetPassword = asyncHandler(async (req, res) => {
     const { email } = req.body;
     const user = await User.findOne({ email });
@@ -142,9 +140,7 @@ const resetPassword = asyncHandler(async (req, res) => {
     res.redirect('/auth/forgot-password');
 });
 
-// @desc Verify user email
-// @route GET /auth/verify-email
-// @access public
+// Verify user email
 const verifyEmail = asyncHandler(async (req, res) => {
     const { token } = req.query;
     const user = await User.findOne({ verificationToken: token });
@@ -163,9 +159,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
     res.redirect('/auth/login');
 });
 
-// @desc Reset password form
-// @route GET /auth/reset-password/:token
-// @access public
+// Render Reset Password Form
 const resetPasswordForm = asyncHandler(async (req, res) => {
     const { token } = req.params;
     const user = await User.findOne({
@@ -182,9 +176,7 @@ const resetPasswordForm = asyncHandler(async (req, res) => {
     res.render('reset-password', { token });
 });
 
-// @desc Update password
-// @route POST /auth/reset-password/:token
-// @access public
+// Update password
 const updatePassword = asyncHandler(async (req, res) => {
     const { token } = req.params;
     const { password, confirmPassword } = req.body;
@@ -206,8 +198,7 @@ const updatePassword = asyncHandler(async (req, res) => {
         return;
     }
 
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
+    user.password = await password;
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
     await user.save();

@@ -10,8 +10,6 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const cors = require('cors');
 
-
-
 connectDB();
 
 const app = express();
