@@ -1,28 +1,39 @@
 const express = require('express');
 const router = express.Router();
+const { isAuthenticated, isAdmin } = require('../middleware/authMiddleware');
 const {
-    renderSignup,
-    renderLogin,
-    renderForgotPassword,
-    signup,
-    login,
-    logout,
-    resetPassword,
-    verifyEmail,
-    resetPasswordForm,
-    updatePassword
-} = require('../controllers/authController');
+    getFiles,
+    searchFile,
+    uploadFile,
+    downloadFile,
+    deleteFile,
+    shareFile
+} = require('../controllers/fileController');
 
-router.get('/signup', renderSignup);
-router.get('/login', renderLogin);
-router.get('/forgot-password', renderForgotPassword);
+// Route to render the dashboard
+router.get('/dashboard', isAuthenticated, async (req, res) => {
+  try {
+    const files = await File.find({});
+    res.render('dashboard', { files, isAdmin: req.user.isAdmin });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error');
+  }
+});
 
-router.post('/signup', signup);
-router.post('/login', login);
-router.get('/logout', logout);
-router.post('/forgot-password', resetPassword);
-router.get('/verify-email', verifyEmail);
-router.get('/reset-password/:token', resetPasswordForm);
-router.post('/reset-password/:token', updatePassword);
+// Route for file upload (Admin only)
+router.post('/files/upload', isAuthenticated, isAdmin, uploadFile);
+
+// Route for file deletion (Admin only)
+router.delete('/files/delete/:id', isAuthenticated, isAdmin, deleteFile);
+
+// Route for file download
+router.get('/files/download/:id', isAuthenticated, downloadFile);
+
+// Route for file sharing via email
+router.post('/files/share/:id', isAuthenticated, shareFile);
+
+// Route for file search
+router.get('/files/search', isAuthenticated, searchFile);
 
 module.exports = router;
