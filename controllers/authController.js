@@ -4,7 +4,7 @@ const asyncHandler = require('express-async-handler');
 const { v4: uuidv4 } = require('uuid');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcryptjs');
-const {isAuthenticated, isdamin} = require('../middleware/authMiddleware')
+const { isAuthenticated, isAdmin } = require('../middleware/authMiddleware');
 
 // Render Signup Page
 const renderSignup = (req, res) => {
@@ -13,8 +13,8 @@ const renderSignup = (req, res) => {
 
 // Render Login Page
 const renderLogin = (req, res) => {
-    if (isAuthenticated) {
-        res.redirect('/files/dashboard');
+    if (req.isAuthenticated()) {
+        return res.redirect('/files/dashboard');
     }
     res.render('login');
 };
@@ -25,21 +25,21 @@ const renderForgotPassword = (req, res) => {
 };
 
 // Register user
-const signup = asyncHandler(async (req, res) => {
+const signup = asyncHandler(async (req, res, next) => {
     const { username, email, password } = req.body;
 
     const userExists = await User.findOne({ email });
 
     if (userExists) {
         req.flash('error_msg', 'User already exists');
-        res.redirect('/auth/signup');
-        return;
+        return res.status(400).redirect('/auth/signup');
     }
 
+    const hashedPassword = await bcrypt.hash(password, 12);
     const user = await User.create({
         username,
         email,
-        password,
+        password: hashedPassword,
         verificationToken: uuidv4()
     });
 
@@ -73,7 +73,7 @@ const signup = asyncHandler(async (req, res) => {
         });
     } else {
         req.flash('error_msg', 'Invalid user data');
-        res.redirect('/auth/signup');
+        res.status(400).redirect('/auth/signup');
     }
 });
 
@@ -85,10 +85,10 @@ const login = passport.authenticate('local', {
 });
 
 // Logout user
-const logout = (req, res) => {
+const logout = (req, res, next) => {
     req.logout((err) => {
         if (err) {
-            return next(err);
+            return next(err); // Pass the error to the global error handler
         }
         req.flash('success_msg', 'You are logged out');
         res.redirect('/auth/login');
@@ -102,8 +102,7 @@ const resetPassword = asyncHandler(async (req, res) => {
 
     if (!user) {
         req.flash('error_msg', 'User not found');
-        res.redirect('/auth/forgot-password');
-        return;
+        return res.status(404).redirect('/auth/forgot-password');
     }
 
     const resetToken = uuidv4();
@@ -148,8 +147,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
 
     if (!user) {
         req.flash('error_msg', 'Invalid verification token');
-        res.redirect('/auth/login');
-        return;
+        return res.status(400).redirect('/auth/login');
     }
 
     user.verified = true;
@@ -170,8 +168,7 @@ const resetPasswordForm = asyncHandler(async (req, res) => {
 
     if (!user) {
         req.flash('error_msg', 'Password reset token is invalid or has expired.');
-        res.redirect('/auth/forgot-password');
-        return;
+        return res.status(400).redirect('/auth/forgot-password');
     }
 
     res.render('reset-password', { token });
@@ -184,8 +181,7 @@ const updatePassword = asyncHandler(async (req, res) => {
 
     if (password !== confirmPassword) {
         req.flash('error_msg', 'Passwords do not match');
-        res.redirect(`/auth/reset-password/${token}`);
-        return;
+        return res.status(400).redirect(`/auth/reset-password/${token}`);
     }
 
     const user = await User.findOne({
@@ -195,11 +191,10 @@ const updatePassword = asyncHandler(async (req, res) => {
 
     if (!user) {
         req.flash('error_msg', 'Password reset token is invalid or has expired.');
-        res.redirect('/auth/forgot-password');
-        return;
+        return res.status(400).redirect('/auth/forgot-password');
     }
 
-    user.password = await password;
+    user.password = await bcrypt.hash(password, 12);
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
     await user.save();

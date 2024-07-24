@@ -9,6 +9,7 @@ const passport = require('./config/passport');
 const session = require('express-session');
 const flash = require('connect-flash');
 const cors = require('cors');
+const methodOverride = require('method-override');
 
 connectDB();
 
@@ -18,6 +19,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Method Override Middleware
+app.use(methodOverride('_method'));
 
 // Session configuration
 app.use(session({
