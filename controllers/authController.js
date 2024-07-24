@@ -6,41 +6,50 @@ const nodemailer = require('nodemailer');
 const bcrypt = require('bcryptjs');
 const { isAuthenticated, isAdmin } = require('../middleware/authMiddleware');
 
-// Render Signup Page
+// @desc Render Signup Page
+// @route GET /auth/signup
+// @access Public
 const renderSignup = (req, res) => {
-    res.render('signup');
+    res.render('signup'); // Render signup page
 };
 
-// Render Login Page
+// @desc Render Login Page
+// @route GET /auth/login
+// @access Public
 const renderLogin = (req, res) => {
     if (req.isAuthenticated()) {
-        return res.redirect('/files/dashboard');
+        return res.redirect('/files/dashboard'); // Redirect if already logged in
     }
-    res.render('login');
+    res.render('login'); // Render login page
 };
 
-// Render Forgot Password Page
+// @desc Render Forgot Password Page
+// @route GET /auth/forgot-password
+// @access Public
 const renderForgotPassword = (req, res) => {
-    res.render('forgot-password');
+    res.render('forgot-password'); // Render forgot password page
 };
 
-// Register user
+// @desc Register user
+// @route POST /auth/signup
+// @access Public
 const signup = asyncHandler(async (req, res, next) => {
     const { username, email, password } = req.body;
 
+    // Check if user already exists
     const userExists = await User.findOne({ email });
-
     if (userExists) {
         req.flash('error_msg', 'User already exists');
         return res.status(400).redirect('/auth/signup');
     }
 
+    // Create a new user
     const hashedPassword = await bcrypt.hash(password, 12);
     const user = await User.create({
         username,
         email,
         password: hashedPassword,
-        verificationToken: uuidv4()
+        verificationToken: uuidv4() // Generate a verification token
     });
 
     if (user) {
@@ -77,25 +86,31 @@ const signup = asyncHandler(async (req, res, next) => {
     }
 });
 
-// Login user
+// @desc Login user
+// @route POST /auth/login
+// @access Public
 const login = passport.authenticate('local', {
     successRedirect: '/files/dashboard',
     failureRedirect: '/auth/login',
     failureFlash: true
 });
 
-// Logout user
+// @desc Logout user
+// @route GET /auth/logout
+// @access Private
 const logout = (req, res, next) => {
     req.logout((err) => {
         if (err) {
-            return next(err); // Pass the error to the global error handler
+            return next(err); // Pass error to global handler
         }
         req.flash('success_msg', 'You are logged out');
         res.redirect('/auth/login');
     });
 };
 
-// Confirm email to reset password
+// @desc Send password reset email
+// @route POST /auth/forgot-password
+// @access Public
 const resetPassword = asyncHandler(async (req, res) => {
     const { email } = req.body;
     const user = await User.findOne({ email });
@@ -105,6 +120,7 @@ const resetPassword = asyncHandler(async (req, res) => {
         return res.status(404).redirect('/auth/forgot-password');
     }
 
+    // Generate reset token
     const resetToken = uuidv4();
     user.resetPasswordToken = resetToken;
     user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
@@ -140,7 +156,9 @@ const resetPassword = asyncHandler(async (req, res) => {
     res.redirect('/auth/forgot-password');
 });
 
-// Verify user email
+// @desc Verify user email
+// @route GET /auth/verify-email
+// @access Public
 const verifyEmail = asyncHandler(async (req, res) => {
     const { token } = req.query;
     const user = await User.findOne({ verificationToken: token });
@@ -158,12 +176,14 @@ const verifyEmail = asyncHandler(async (req, res) => {
     res.redirect('/auth/login');
 });
 
-// Render Reset Password Form
+// @desc Render Reset Password Form
+// @route GET /reset-password/:token
+// @access Private
 const resetPasswordForm = asyncHandler(async (req, res) => {
     const { token } = req.params;
     const user = await User.findOne({
         resetPasswordToken: token,
-        resetPasswordExpires: { $gt: Date.now() }
+        resetPasswordExpires: { $gt: Date.now() } // Check if token is valid
     });
 
     if (!user) {
@@ -171,10 +191,12 @@ const resetPasswordForm = asyncHandler(async (req, res) => {
         return res.status(400).redirect('/auth/forgot-password');
     }
 
-    res.render('reset-password', { token });
+    res.render('reset-password', { token }); // Render reset password form
 });
 
-// Update password
+// @desc Update password
+// @route POST /reset-password/:token
+// @access Private
 const updatePassword = asyncHandler(async (req, res) => {
     const { token } = req.params;
     const { password, confirmPassword } = req.body;
@@ -186,7 +208,7 @@ const updatePassword = asyncHandler(async (req, res) => {
 
     const user = await User.findOne({
         resetPasswordToken: token,
-        resetPasswordExpires: { $gt: Date.now() }
+        resetPasswordExpires: { $gt: Date.now() } // Check if token is valid
     });
 
     if (!user) {
