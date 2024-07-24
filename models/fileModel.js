@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const fileSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     description: {
         type: String,
@@ -17,7 +18,7 @@ const fileSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    emailsSent: {
+    shareCount: {
         type: Number,
         default: 0
     },
