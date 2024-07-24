@@ -58,7 +58,6 @@
                     <span>Downloads: <%= file.downloadCount %></span>
                     <span>Shares: <%= file.shareCount %></span>
                 <% } %>
-                <a href="/files/download/<%= file._id %>">Download</a>
 
                 <!-- Share Form -->
                 <form action="/files/share/<%= file._id %>" method="POST"
@@ -74,6 +73,9 @@
                     method="POST" style="display:inline;">
                     <input type="hidden" name="_method" value="DELETE" />
                     <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+                <form action="/files/download/<%= file._id %>" method="GET" style="display:inline;">
+                    <button type="submit" class="btn btn-secondary">Download</button>
                 </form>
                 <% } %>
             </li>
