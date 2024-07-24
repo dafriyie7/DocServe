@@ -71,10 +71,15 @@ const uploadFile = asyncHandler(async (req, res) => {
     }
 
     try {
+      // Sanitize title to create a valid filename (optional)
+      const sanitizedTitle = title.replace(/[<>:"/\\|?*\x00-\x1F]/g, '_'); // Replace invalid characters
+      const fileExtension = path.extname(req.file.originalname); // Get the original file extension
+      const fileName = `${sanitizedTitle}${fileExtension}`; // Use title as filename with original extension
+
       // Upload file to Dropbox
       const fileContent = req.file.buffer;
       const dropboxResponse = await dbx.filesUpload({
-        path: `/${req.file.originalname}`,
+        path: `/${fileName}`,
         contents: fileContent
       });
 
@@ -96,6 +101,7 @@ const uploadFile = asyncHandler(async (req, res) => {
     }
   });
 });
+
 
 // @desc Download file
 // @route GET /files/download/:id
@@ -143,7 +149,7 @@ const deleteFile = asyncHandler(async (req, res) => {
     }
 
     // Delete file from Dropbox
-    await dbx.filesDelete({ path: file.path });
+   await dbx.filesDeleteV2({ path: file.path });
 
     // Delete the file record from the database
     const result = await File.findByIdAndDelete(req.params.id);
