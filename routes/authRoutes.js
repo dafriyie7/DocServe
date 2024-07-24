@@ -13,6 +13,7 @@ const {
     updatePassword
 } = require('../controllers/authController');
 
+// pages rendering
 router.get('/signup', renderSignup);
 router.get('/login', renderLogin);
 router.get('/forgot-password', renderForgotPassword);

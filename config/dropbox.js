@@ -1,6 +1,3 @@
-// config/dropbox.js
-
-// Import the universal fetch API
 const fetch = require('isomorphic-fetch');
 const Dropbox = require('dropbox').Dropbox;
 

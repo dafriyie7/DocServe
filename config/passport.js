@@ -10,7 +10,7 @@ passport.serializeUser((user, done) => {
 // Deserialize user from session
 passport.deserializeUser(async (id, done) => {
   try {
-    const user = await User.findById(id).exec(); // Use exec() to execute the query
+    const user = await User.findById(id).exec(); // Find user by ID
     done(null, user);
   } catch (err) {
     done(err, null);
@@ -19,17 +19,17 @@ passport.deserializeUser(async (id, done) => {
 
 // Local strategy for username/password login
 passport.use(new LocalStrategy({
-    usernameField: 'email',
+    usernameField: 'email', // Use email as username
     passwordField: 'password'
 }, async (email, password, done) => {
     try {
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email }); // Find user by email
 
         if (!user) {
             return done(null, false, { message: 'Incorrect email.' });
         }
 
-        const isMatch = await user.matchPassword(password);
+        const isMatch = await user.matchPassword(password); // Check password
 
         if (!isMatch) {
             return done(null, false, { message: 'Incorrect password.' });
@@ -39,7 +39,7 @@ passport.use(new LocalStrategy({
             return done(null, false, { message: 'Email not verified.' });
         }
 
-        return done(null, user);
+        return done(null, user); // Successful authentication
     } catch (err) {
         return done(err);
     }
