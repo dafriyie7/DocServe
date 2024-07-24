@@ -1,9 +1,11 @@
+// controllers/fileController.js
+
 const asyncHandler = require('express-async-handler');
 const File = require('../models/fileModel');
-const fs = require('fs');
 const path = require('path');
 const nodemailer = require('nodemailer');
-const upload = require('../config/multer');
+const dbx = require('../config/dropbox'); // Import the Dropbox client
+const upload = require('../config/multer')
 const { isAdmin } = require('../middleware/authMiddleware');
 
 // @desc Get all files or search results
@@ -27,7 +29,6 @@ const renderDashboard = asyncHandler(async (req, res) => {
   }
 });
 
-
 // @desc Search for file
 // @route GET /files/search
 // @access public
@@ -48,10 +49,11 @@ const searchFile = asyncHandler(async (req, res) => {
 // @route POST /files/upload
 // @access private
 const uploadFile = asyncHandler(async (req, res) => {
+  // Handling file upload with multer
   upload.single('file')(req, res, async (err) => {
     if (err) {
       req.flash('error_msg', err.message);
-      return res.redirect('/files/dashboard'); // Corrected redirect path
+      return res.redirect('/files/dashboard');
     }
 
     const { title, description } = req.body;
@@ -59,26 +61,35 @@ const uploadFile = asyncHandler(async (req, res) => {
 
     if (!title || !description) {
       req.flash('error_msg', 'Title and description are required');
-      return res.redirect('/files/dashboard'); // Corrected redirect path
+      return res.redirect('/files/dashboard');
     }
 
     try {
+      // Upload file to Dropbox
+      const fileContent = req.file.buffer;
+      const dropboxResponse = await dbx.filesUpload({
+        path: `/${req.file.originalname}`,
+        contents: fileContent
+      });
+
+      // Save file information to database
       const file = new File({
         title,
         description,
-        path: req.file.path,
+        path: dropboxResponse.result.path_display, // Save Dropbox path
         uploadedBy
       });
 
       await file.save();
       req.flash('success_msg', 'File uploaded and saved successfully');
-      res.redirect('/files/dashboard'); // Corrected redirect path
+      res.redirect('/files/dashboard');
     } catch (err) {
       req.flash('error_msg', 'Failed. Re-upload file');
-      res.redirect('/files/dashboard'); // Corrected redirect path
+      res.redirect('/files/dashboard');
     }
   });
 });
+
 
 // @desc Download file
 // @route GET /files/download/:id
@@ -92,11 +103,14 @@ const downloadFile = asyncHandler(async (req, res) => {
       return res.redirect('/files/dashboard');
     }
 
+    // Fetch file content from Dropbox
+    const dropboxResponse = await dbx.filesDownload({ path: file.path });
+    res.setHeader('Content-Disposition', `attachment; filename=${path.basename(file.path)}`);
+    res.send(dropboxResponse.result.fileBinary);
+    
     // Increment downloadCount
     file.downloadCount += 1;
     await file.save();
-
-    res.download(file.path);
   } catch (error) {
     req.flash('error_msg', 'Error downloading file');
     res.redirect('/files/dashboard');
@@ -110,30 +124,16 @@ const deleteFile = asyncHandler(async (req, res) => {
   try {
     // Find the file by ID
     const file = await File.findById(req.params.id);
-    
-    // If the file does not exist, send an error message
     if (!file) {
       req.flash('error_msg', 'File not found');
       return res.redirect('/files/dashboard');
     }
 
-    // Construct the full file path
-    const filePath = path.join(__dirname, '../public/uploads', path.basename(file.path));
-    console.log(`Attempting to delete file at: ${filePath}`);
-
-    // Check if the file exists before attempting to delete
-    if (fs.existsSync(filePath)) {
-      // Delete the file from the filesystem
-      await fs.promises.unlink(filePath);
-      console.log(`File deleted successfully: ${filePath}`);
-    } else {
-      console.warn(`File not found on filesystem: ${filePath}`);
-    }
+    // Delete file from Dropbox
+    await dbx.filesDelete({ path: file.path });
 
     // Delete the file record from the database
     const result = await File.findByIdAndDelete(req.params.id);
-
-    // Check if record was deleted
     if (!result) {
       req.flash('error_msg', 'Failed to delete file record from database');
       return res.redirect('/files/dashboard');
@@ -157,10 +157,7 @@ const shareFile = asyncHandler(async (req, res) => {
   const { email } = req.body; // Ensure email is passed in the request
 
   try {
-    // Find the file by ID
     const file = await File.findById(id);
-    
-    // If the file does not exist, send an error message
     if (!file) {
       req.flash('error_msg', 'File not found');
       return res.redirect('/files/dashboard');
@@ -170,8 +167,8 @@ const shareFile = asyncHandler(async (req, res) => {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: process.env.EMAIL_USER, // Use environment variable for email
-        pass: process.env.EMAIL_PASS  // Use environment variable for password
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
       }
     });
 
@@ -199,7 +196,6 @@ const shareFile = asyncHandler(async (req, res) => {
     res.redirect('/files/dashboard');
   }
 });
-
 
 module.exports = {
   searchFile,
