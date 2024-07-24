@@ -2,7 +2,7 @@ const asyncHandler = require('express-async-handler');
 const File = require('../models/fileModel');
 const path = require('path');
 const nodemailer = require('nodemailer');
-const dbx = require('../config/dropbox'); // Import the Dropbox client
+const dbx = require('../config/dropbox');
 const upload = require('../config/multer');
 const { isAdmin } = require('../middleware/authMiddleware');
 
@@ -182,6 +182,12 @@ const shareFile = asyncHandler(async (req, res) => {
       return res.redirect('/files/dashboard');
     }
 
+    // Fetch file content from Dropbox
+    const dropboxResponse = await dbx.filesDownload({ path: file.path });
+    const fileContent = dropboxResponse.result.fileBinary;
+    const fileName = path.basename(file.path);
+    const mimeType = dropboxResponse.result.fileBinary.mimeType || 'application/octet-stream';
+
     // Configure the email transport
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -191,12 +197,20 @@ const shareFile = asyncHandler(async (req, res) => {
       }
     });
 
-    // Set up email options
+    // Set up email options with attachment
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
       subject: `File: ${file.title}`,
-      text: `You can download the file from the following link: ${req.protocol}://${req.get('host')}/files/download/${file._id}`
+      text: `Here is the file you requested: ${file.title}`,
+      attachments: [
+        {
+          filename: fileName,
+          content: fileContent,
+          encoding: 'base64',
+          contentType: mimeType
+        }
+      ]
     };
 
     // Send email
