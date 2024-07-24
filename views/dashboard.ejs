@@ -4,83 +4,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dashboard for managing and sharing documents">
+    <meta name="author" content="Your Name">
     <title>Dashboard</title>
     <link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
-    <header>
-        <h1>Welcome to Your Dashboard</h1>
-        <a href="/auth/logout" class="btn btn-danger">Logout</a>
-    </header>
+    <!-- Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Main Navigation">
+        <h1>DocServe</h1>
+        <h2>Welcome to Your Dashboard</h2>
+        <a href="/auth/logout" class="btn btn-danger" role="button" aria-label="Logout">Logout</a>
+    </nav>
 
     <!-- Flash messages -->
-    <% if (error_msg) { %>
-        <div class="alert alert-danger">
-            <%= error_msg %>
-        </div>
-    <% } %>
-
-    <% if (success_msg) { %>
-        <div class="alert alert-success">
-            <%= success_msg %>
-        </div>
-    <% } %>
+    <section class="flash-messages">
+        <% if (error_msg) { %>
+            <div class="alert alert-danger" role="alert">
+                <%= error_msg %>
+            </div>
+            <% } %>
+                <% if (success_msg) { %>
+                    <div class="alert alert-success" role="alert">
+                        <%= success_msg %>
+                    </div>
+                    <% } %>
+    </section>
 
     <!-- Search Form -->
-    <form action="/files/dashboard" method="GET" style="margin-bottom: 20px;">
-        <input type="text" name="query" placeholder="Search by title" value="<%= query %>" />
-        <button type="submit" class="btn btn-primary">Search</button>
-    </form>
-
-    <!-- Show upload form only if user is admin -->
-    <% if (isAdmin) { %>
-        <!-- Upload Form -->
-        <form action="/files/upload" method="POST" enctype="multipart/form-data">
-            <input type="text" name="title" placeholder="Title" required />
-            <textarea name="description" placeholder="Description" required></textarea>
-            <input type="file" name="file" required />
-            <button type="submit">Upload File</button>
+    <section class="search-form">
+        <form action="/files/dashboard" method="GET" role="search">
+            <label for="search-query" class="visually-hidden">Search by title:</label>
+            <input type="text" id="search-query" name="query" placeholder="Search by title" value="<%= query %>"
+                aria-label="Search by title" />
+            <button type="submit" class="btn btn-primary">Search</button>
         </form>
-    <% } %>
+    </section>
 
-    <!-- Display Uploaded Files -->
-    <h2>Uploaded Files</h2>
-    <ul>
-        <% files.forEach(file=> { %>
-            <li>
-                <strong>
-                    <%= file.title %>
-                </strong>: <%= file.description %>
+    <!-- Upload Form (visible only to admin) -->
+    <% if (isAdmin) { %>
+        <section class="upload-form">
+            <h2>Upload New File</h2>
+            <form action="/files/upload" method="POST" enctype="multipart/form-data" class="form-inline" role="form">
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" placeholder="Title" required aria-required="true" />
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" placeholder="Description" required
+                        aria-required="true"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="file">File:</label>
+                    <input type="file" id="file" name="file" required aria-required="true" />
+                </div>
+                <button type="submit" class="btn btn-primary">Upload File</button>
+            </form>
+        </section>
+        <% } %>
 
-                <!-- Show downloadCount and shareCount only if user is admin -->
-                <% if (isAdmin) { %>
-                    <span>Downloads: <%= file.downloadCount %></span>
-                    <span>Shares: <%= file.shareCount %></span>
-                <% } %>
+            <!-- Display Uploaded Files -->
+            <section class="file-list">
+                <h2>Uploaded Files</h2>
+                <ul>
+                    <% files.forEach(file=> { %>
+                        <li class="file-item">
+                            <div class="file-info">
+                                <strong>TITLE:</strong>
+                                <%= file.title %> <br>
+                                    <strong>DESCRIPTION:</strong>
+                                    <%= file.description %>
+                                        <% if (isAdmin) { %>
+                                            <div class="file-stats">
+                                                <span>Downloads: <%= file.downloadCount %></span>
+                                                <span>Shares: <%= file.shareCount %></span>
+                                            </div>
+                                            <% } %>
+                            </div>
 
-                <!-- Share Form -->
-                <form action="/files/share/<%= file._id %>" method="POST"
-                    style="display:inline;">
-                    <input type="email" name="email" placeholder="Recipient's Email"
-                        required />
-                    <button type="submit" class="btn btn-primary">Share</button>
-                </form>
+                            <!-- Share Form -->
+                            <form action="/files/share/<%= file._id %>" method="POST" class="share-form" role="form">
+                                <label for="share-email" class="visually-hidden">Recipient's Email:</label>
+                                <input type="email" id="share-email" name="email" placeholder="Recipient's Email"
+                                    required aria-required="true" />
+                                <button type="submit" class="btn btn-primary">Share</button>
+                            </form>
 
-                <!-- Show delete form only if user is admin -->
-                <% if (isAdmin) { %>
-                <form action="/files/delete/<%= file._id %>?_method=DELETE"
-                    method="POST" style="display:inline;">
-                    <input type="hidden" name="_method" value="DELETE" />
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-                <form action="/files/download/<%= file._id %>" method="GET" style="display:inline;">
-                    <button type="submit" class="btn btn-secondary">Download</button>
-                </form>
-                <% } %>
-            </li>
-        <% }); %>
-    </ul>
+                            <% if (isAdmin) { %>
+                                <!-- Delete Form -->
+                                <form action="/files/delete/<%= file._id %>?_method=DELETE" method="POST"
+                                    class="delete-form" role="form">
+                                    <input type="hidden" name="_method" value="DELETE" />
+                                    <button type="submit" class="btn btn-danger"
+                                        aria-label="Delete file">Delete</button>
+                                </form>
+                                <% } %><!-- Download Form -->
+                                <form action="/files/download/<%= file._id %>" method="GET" class="download-form" role="form">
+                                    <button type="submit" class="btn btn-secondary" aria-label="Download file">Download</button>
+                                </form>
+                        </li>
+                        <% }); %>
+                </ul>
+            </section>
 </body>
 
 </html>

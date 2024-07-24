@@ -1,3 +1,4 @@
+/* General Styling */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -5,6 +6,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    margin: 0;
 }
 
 .container {
@@ -32,6 +34,8 @@ h2 {
     width: 100%;
     padding: 8px;
     box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
 
 button {
@@ -58,18 +62,17 @@ button:hover {
     text-decoration: none;
 }
 
+/* Flash Messages */
 .alert {
     padding: 10px;
     margin-bottom: 15px;
-    border-radius: 4px;
+    font-size: 0.9em;
 }
 
 .alert-danger {
-    background-color: #f8d7da;
     color: #721c24;
 }
 
 .alert-success {
-    background-color: #d4edda;
     color: #155724;
 }
