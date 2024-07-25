@@ -66,47 +66,58 @@
         <% } %>
 
             <!-- Display Uploaded Files -->
-            <section class="file-list">
-                <h2>Uploaded Files</h2>
-                <ul>
-                    <% files.forEach(file=> { %>
-                        <li class="file-item">
-                            <div class="file-info">
-                                <strong>TITLE:</strong>
-                                <%= file.title %> <br>
-                                    <strong>DESCRIPTION:</strong>
-                                    <%= file.description %>
-                                        <% if (isAdmin) { %>
-                                            <div class="file-stats">
-                                                <span>Downloads: <%= file.downloadCount %></span>
-                                                <span>Shares: <%= file.shareCount %></span>
-                                            </div>
-                                            <% } %>
-                            </div>
-
-                            <!-- Share Form -->
-                            <form action="/files/share/<%= file._id %>" method="POST" class="share-form" role="form">
-                                <label for="share-email" class="visually-hidden">Recipient's Email:</label>
-                                <input type="email" id="share-email" name="email" placeholder="Recipient's Email"
-                                    required aria-required="true" />
-                                <button type="submit" class="btn btn-primary">Share</button>
-                            </form>
-
-                            <% if (isAdmin) { %>
-                                <!-- Delete Form -->
-                                <form action="/files/delete/<%= file._id %>?_method=DELETE" method="POST"
-                                    class="delete-form" role="form">
-                                    <input type="hidden" name="_method" value="DELETE" />
-                                    <button type="submit" class="btn btn-danger"
-                                        aria-label="Delete file">Delete</button>
-                                </form>
-                                <% } %><!-- Download Form -->
-                                <form action="/files/download/<%= file._id %>" method="GET" class="download-form" role="form">
-                                    <button type="submit" class="btn btn-secondary" aria-label="Download file">Download</button>
-                                </form>
-                        </li>
-                        <% }); %>
-                </ul>
+            <section class="file-list container-wide container-indent">
+                <div id="product-files" class="col-lg-12 product-tabs-panel">
+                    <div class="product-files-table-container row">
+                        <table class="table table-ocs-file">
+                            <thead>
+                                <tr>
+                                    <th>File (click to download)</th>
+                                    <th>Description</th>
+                                    <th>Downloads</th>
+                                    <th>Shares</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% files.forEach(file=> { %>
+                                    <tr>
+                                        <td><a href="/files/download/<%= file._id %>" class="file-link">
+                                                <%= file.title %>
+                                            </a></td>
+                                        <td>
+                                            <%= file.description %>
+                                        </td>
+                                        <td class="text-right">
+                                            <%= file.downloadCount %>
+                                        </td>
+                                        <td class="text-right">
+                                            <%= file.shareCount %>
+                                        </td>
+                                        <td class="text-right">
+                                            <form action="/files/share/<%= file._id %>" method="POST" class="share-form"
+                                                role="form">
+                                                <label for="share-email" class="visually-hidden">Recipient's
+                                                    Email:</label>
+                                                <input type="email" id="share-email" name="email"
+                                                    placeholder="Recipient's Email" required aria-required="true" />
+                                                <button type="submit" class="btn btn-primary">Share</button>
+                                            </form>
+                                            <% if (isAdmin) { %>
+                                                <form action="/files/delete/<%= file._id %>?_method=DELETE"
+                                                    method="POST" class="delete-form" role="form">
+                                                    <input type="hidden" name="_method" value="DELETE" />
+                                                    <button type="submit" class="btn btn-danger"
+                                                        aria-label="Delete file">Delete</button>
+                                                </form>
+                                                <% } %>
+                                        </td>
+                                    </tr>
+                                    <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </section>
 </body>
 
