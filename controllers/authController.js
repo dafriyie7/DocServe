@@ -10,7 +10,7 @@ const { isAuthenticated, isAdmin } = require('../middleware/authMiddleware');
 // @route GET /auth/signup
 // @access Public
 const renderSignup = (req, res) => {
-    res.render('signup'); // Render signup page
+    res.render('signup');
 };
 
 // @desc Render Login Page
@@ -27,7 +27,7 @@ const renderLogin = (req, res) => {
 // @route GET /auth/forgot-password
 // @access Public
 const renderForgotPassword = (req, res) => {
-    res.render('forgot-password'); // Render forgot password page
+    res.render('forgot-password');
 };
 
 // @desc Register user

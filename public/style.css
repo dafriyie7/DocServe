@@ -88,14 +88,15 @@ body {
 }
 
 .upload-form {
-    margin: 20px auto;
-    margin-bottom: 50px;
+    margin: 40px auto 50px;
     padding: 8px;
     background-color: #2c2c2c;
     border-radius: 7px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     max-width: 300px;
     box-sizing: border-box;
+    margin-left: 20px;
+    margin-right: auto;
 }
 
 .upload-form h2 {
