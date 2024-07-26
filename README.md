@@ -1,12 +1,50 @@
 # DocServe
 
-A document sharing platform using express.js, mongodb and ejs
+a platform designed to streamline file management and sharing.
+
+Table of Contents
+
+Description
+Installation
+Features
+File Structure
+Technologies Used
+Contributing
+
+DESCRIPTION
+....................................................
 
 WEBSITE LINK: <https://docserve.onrender.com>
 
-DocServe is a robust document distribution platform designed to streamline file management and sharing. This platform caters to both regular users and administrators, providing a comprehensive set of features to ensure efficient document handling and secure access.
+DocServe is a platform designed to streamline file management and sharing. This platform caters to both regular users and administrators, providing a comprehensive set of features to ensure efficient document handling and secure access.
 
-Key Features
+INSTALLATION
+..................................................
+
+Prerequisites
+. mongodb and mongo url
+. email account
+. dropbox api
+
+Clone Repository
+git clone <https://github.com/dafriyie7/DocServe.git>
+cd DocServe
+
+TO INSTALL DEPENDENCIES
+run: npm install
+
+SETUP YOUR .env FILE
+PORT = 5000
+MONGO_URL = your_mongo_url
+SESSION_SECRET = your_session_secret
+EMAIL_USER = your_email
+EMAIL_PASS = your_email_password
+DROPBOX_ACCESS_TOKEN = your_dropbox_access_token
+
+Run the application
+npm run dev
+
+FEATURES
 ....................................................
 
 1. User Authentication
@@ -15,75 +53,67 @@ Features:
 Signup with email verification.
 Login with email and password.
 Reset password feature.
-Implementation Steps:
-
-Use Passport.js for authentication and session management.
-Implement routes and controllers for user signup, login, password reset, and email verification.
-Store user data in MongoDB, including hashed passwords.
 2. User Dashboard and File Feed
 Features:
 
 Display a feed of downloadable files.
 Allow users to search the file server.
-Implementation Steps:
-
-Create routes and controllers to handle file retrieval and searching.
-Use MongoDB to store file metadata (title, description, download count).
-Implement views (using EJS or similar) to render the file feed and search results.
+Admins can upload, download and delete files
 3. Email Functionality
 Features:
 
 Allow users to send files to an email through the platform.
-Implementation Steps:
 
-Use an email service provider like SendGrid to handle email sending.
-Implement routes and controllers to handle file sending via email.
-4. Admin Functionalities
-Features:
+FILE STRUCTURE
+├── config/                     // Configuration files
+│   └── db.js                   // Database connection setup
+├── controllers/                // Controllers for handling business logic
+│   ├── authController.js       // Controller for authentication related actions
+│   ├── adminController.js      // Controller for admin related actions
+│   └── fileController.js       // Controller for file handling actions
+├── middleware/                 // Middleware functions
+│   ├── authMiddleware.js       // Middleware for authentication and authorization
+│   └── errorMiddleware.js      // Middleware for handling errors
+├── models/                     // Mongoose models for MongoDB
+│   ├── userModel.js            // User schema and model definition
+│   └── fileModel.js            // File schema and model definition
+├── routes/                     // Express routes
+│   ├── authRoutes.js           // Routes for authentication (signup, login, reset password)
+│   ├── fileRoutes.js           // Routes for handling files (upload, download, delete)
+│   └── adminRoutes.js          // Routes for admin operations
+├── views/                      // EJS view templates
+│   ├── login.ejs               // Login page template
+│   ├── signup.ejs              // Signup page template
+│   ├── resetPassword.ejs       // Reset password page template
+│   ├── files/                  // File-related view templates
+│   │   ├── upload.ejs          // File upload page template
+│   │   ├── list.ejs            // List of files page template
+│   │   ├── details.ejs         // File details page template
+│   │   └── edit.ejs            // Edit file details page template
+├── public/                     // Public static assets
+│   ├── style.css               // CSS styles
+│   └── scripts.js              // Client-side JavaScript
+├── .env                        // Environment variables configuration
+├── server.js                   // Main server file
+├── package.json                // Node.js project configuration
+└── README.md                   // Project documentation and instructions
 
-Upload files with title and description.
-View download and email send statistics for each file.
-Implementation Steps:
-
-Implement admin routes and controllers for file upload and statistics retrieval.
-Secure admin routes using authentication middleware (to ensure only admins can access).
-
-APIs
-
-userRoutes
-................................................
-Purpose: Handles user authentication and management.
-
-Routes:
-
-POST /user/signup: For user signup.
-POST /user/login: For user login.
-PUT /user/resetPassword: For password reset.
-GET /user/login: Render login page.
-GET /user/signup: Render signup page.
-Controller Methods: Functions to handle signup, login, and password reset logic.
-
-Middleware: May include middleware for input validation, authentication, etc.
-
-fileRoutes  FILE ROUTES
-.................................................
-Purpose: Handles file operations such as uploading, retrieving, updating, and deleting files.
-
-Routes:
-
-GET /files: Get all files.
-POST /files: Upload a new file.
-GET /files/:id: Get a specific file by ID.
-PUT /files/:id: Update a file by ID.
-DELETE /api/files/:id: Delete a file by ID.
-Middleware: Uses multer for handling file uploads, can also include middleware for authentication, input validation, etc.
-
-ADMIN IMPLEMENTATION
-..................................................
-
-Implementation Steps
-Add a Role to the User Model: Add an isAdmin field to the user model to differentiate between admin and regular users.
-
-Create Middleware for Role-Based Access Control: Create middleware to check if the user has admin privileges.
-
-Use the Middleware in Routes: Apply the middleware to routes that require admin access.
+Technologies used
+Node.js
+Express.js
+Mongoose
+Passport.js
+bcryptjs
+Multer
+Dropbox SDK
+express-session
+connect-mongo
+dotenv
+uuid
+got
+method-override
+nodemailer
+EJS
+connect-flash
+cors
+nodemon
