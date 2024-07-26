@@ -9,7 +9,6 @@ Installation
 Features
 File Structure
 Technologies Used
-Contributing
 
 DESCRIPTION
 ....................................................
