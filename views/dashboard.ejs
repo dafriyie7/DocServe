@@ -29,19 +29,17 @@
 
     <!-- Flash messages -->
     <section class="flash-messages">
-    <% 
-    const messages = [
-        { type: 'success', msg: success_msg },
-        { type: 'danger', msg: error }
-    ];
-    %>
-    <% messages.forEach(({ type, msg }) => { %>
-        <% if (msg) { %>
-            <div class="alert alert-<%= type %>">
-                <%= msg %>
-            </div>
+    <% if (error_msg) { %>
+        <div class="alert alert-danger">
+            <%= error_msg %>
+        </div>
         <% } %>
-    <% }) %>
+    
+            <% if (success_msg) { %>
+                <div class="alert alert-success">
+                    <%= success_msg %>
+                </div>
+                <% } %>
 </section>
 
 
