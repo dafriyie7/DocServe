@@ -15,32 +15,33 @@
     <nav class="navbar" role="navigation" aria-label="Main Navigation">
         <h1>DocServe</h1>
         <h2>Welcome to Your Dashboard</h2>
-        <a href="/auth/logout" class="btn btn-danger" role="button" aria-label="Logout">Logout</a>
+
+        <!-- Search Form -->
+        <section class="search-form">
+            <form action="/files/dashboard" method="GET" role="search">
+                <input type="text" id="search-query" name="query" placeholder="Search by title" value="<%= query %>"
+                    aria-label="Search by title" />
+                <button type="submit" class="btn btn-primary">Search</button>
+                <a href="/auth/logout" class="btn btn-danger" role="button" aria-label="Logout">Logout</a>
+            </form>
+        </section>
     </nav>
 
     <!-- Flash messages -->
     <section class="flash-messages">
-        <% if (error_msg) { %>
-            <div class="alert alert-danger" role="alert">
-                <%= error_msg %>
-            </div>
-            <% } %>
-                <% if (success_msg) { %>
-                    <div class="alert alert-success" role="alert">
-                        <%= success_msg %>
-                    </div>
-                    <% } %>
-    </section>
+    <% if (error_msg) { %>
+        <div class="alert alert-danger">
+            <%= error_msg %>
+        </div>
+        <% } %>
+    
+            <% if (success_msg) { %>
+                <div class="alert alert-success">
+                    <%= success_msg %>
+                </div>
+                <% } %>
+</section>
 
-    <!-- Search Form -->
-    <section class="search-form">
-        <form action="/files/dashboard" method="GET" role="search">
-            <label for="search-query" class="visually-hidden">Search by title:</label>
-            <input type="text" id="search-query" name="query" placeholder="Search by title" value="<%= query %>"
-                aria-label="Search by title" />
-            <button type="submit" class="btn btn-primary">Search</button>
-        </form>
-    </section>
 
     <!-- Upload Form (visible only to admin) -->
     <% if (isAdmin) { %>
@@ -76,7 +77,7 @@
                                     <th>Description</th>
                                     <th>Downloads</th>
                                     <th>Shares</th>
-                                    <th>Action</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -97,9 +98,9 @@
                                         <td class="text-right">
                                             <form action="/files/share/<%= file._id %>" method="POST" class="share-form"
                                                 role="form">
-                                                <label for="share-email" class="visually-hidden">Recipient's
-                                                    Email:</label>
-                                                <input type="email" id="share-email" name="email"
+                                                <label for="share-email-<%= file._id %>"
+                                                    class="visually-hidden">Recipient's Email:</label>
+                                                <input type="email" id="share-email-<%= file._id %>" name="email"
                                                     placeholder="Recipient's Email" required aria-required="true" />
                                                 <button type="submit" class="btn btn-primary">Share</button>
                                             </form>
