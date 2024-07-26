@@ -74,13 +74,16 @@ const uploadFile = asyncHandler(async (req, res) => {
       // Sanitize title to create a valid filename (optional)
       const sanitizedTitle = title.replace(/[<>:"/\\|?*\x00-\x1F]/g, '_'); // Replace invalid characters
       const fileExtension = path.extname(req.file.originalname); // Get the original file extension
-      const fileName = `${sanitizedTitle}${fileExtension}`; // Use title as filename with original extension
+      const fileName = `${sanitizedTitle}${fileExtension}`;
 
       // Upload file to Dropbox
       const fileContent = req.file.buffer;
       const dropboxResponse = await dbx.filesUpload({
         path: `/${fileName}`,
-        contents: fileContent
+        contents: fileContent,
+        mode: 'add',
+        autorename: true,
+        mute: false,
       });
 
       // Save file information to the database
@@ -88,7 +91,9 @@ const uploadFile = asyncHandler(async (req, res) => {
         title,
         description,
         path: dropboxResponse.result.path_display, // Save Dropbox path
-        uploadedBy
+        uploadedBy,
+        downloadCount: 0, // Initialize download count
+        shareCount: 0, // Initialize share count
       });
 
       await file.save();
@@ -101,6 +106,7 @@ const uploadFile = asyncHandler(async (req, res) => {
     }
   });
 });
+
 
 
 // @desc Download file
@@ -121,10 +127,12 @@ const downloadFile = asyncHandler(async (req, res) => {
     const fileContent = dropboxResponse.result.fileBinary;
     const fileName = path.basename(file.path);
 
+    const mimeType = dropboxResponse.result['.tag'] === 'file' ? dropboxResponse.result.media_info?.metadata?.mime_type || 'application/octet-stream' : 'application/octet-stream';
+
     // Set headers and send file content
-    res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
-    res.setHeader('Content-Type', dropboxResponse.result.fileBinary.mimeType || 'application/octet-stream');
-    res.send(fileContent);
+    res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
+    res.setHeader('Content-Type', mimeType);
+    res.send(Buffer.from(fileContent, 'binary'));
 
     // Increment download count and save
     file.downloadCount = (file.downloadCount || 0) + 1;
@@ -135,6 +143,7 @@ const downloadFile = asyncHandler(async (req, res) => {
     res.redirect('/files/dashboard');
   }
 });
+
 
 // @desc Delete file
 // @route DELETE /files/delete/:id
@@ -186,7 +195,9 @@ const shareFile = asyncHandler(async (req, res) => {
     const dropboxResponse = await dbx.filesDownload({ path: file.path });
     const fileContent = dropboxResponse.result.fileBinary;
     const fileName = path.basename(file.path);
-    const mimeType = dropboxResponse.result.fileBinary.mimeType || 'application/octet-stream';
+
+    // Determine MIME type
+    const mimeType = dropboxResponse.result['.tag'] === 'file' ? dropboxResponse.result.media_info?.metadata?.mime_type || 'application/octet-stream' : 'application/octet-stream';
 
     // Configure the email transport
     const transporter = nodemailer.createTransport({
@@ -202,12 +213,11 @@ const shareFile = asyncHandler(async (req, res) => {
       from: process.env.EMAIL_USER,
       to: email,
       subject: `File: ${file.title}`,
-      text: `Here is the file you requested: ${file.title}`,
+      text: `This file was sent to you from ${email}: ${file.title}`,
       attachments: [
         {
           filename: fileName,
           content: fileContent,
-          encoding: 'base64',
           contentType: mimeType
         }
       ]
@@ -228,6 +238,7 @@ const shareFile = asyncHandler(async (req, res) => {
     res.redirect('/files/dashboard');
   }
 });
+
 
 module.exports = {
   searchFile,

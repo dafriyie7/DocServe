@@ -10,17 +10,20 @@
 
 <body>
     <div class="container">
+        <h1 id="title">DocServe</h1>
         <h2>Login</h2>
-        <% if (success_msg) { %>
-            <div class="alert alert-success">
-                <%= success_msg %>
-            </div>
-            <% } %>
-        <% if (error) { %>
-            <div class="alert alert-danger">
-                <%= error %>
-            </div>
-        <% } %>
+        <div class="flash-messages">
+            <% if (success_msg) { %>
+                <div class="alert alert-success">
+                    <%= success_msg %>
+                </div>
+                <% } %>
+                    <% if (error) { %>
+                        <div class="alert alert-danger">
+                            <%= error %>
+                        </div>
+                        <% } %>
+        </div>
         <form action="/auth/login" method="POST">
             <div class="form-group">
                 <label for="email">Email:</label>
