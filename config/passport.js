@@ -1,6 +1,6 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const User = require('../models/userModel'); // Adjust the path as necessary
+const User = require('../models/userModel');
 
 // Serialize user into session
 passport.serializeUser((user, done) => {
@@ -19,7 +19,7 @@ passport.deserializeUser(async (id, done) => {
 
 // Local strategy for username/password login
 passport.use(new LocalStrategy({
-    usernameField: 'email', // Use email as username
+    usernameField: 'email',
     passwordField: 'password'
 }, async (email, password, done) => {
     try {
