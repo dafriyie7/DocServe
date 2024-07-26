@@ -33,13 +33,18 @@ const renderForgotPassword = (req, res) => {
 // @desc Register user
 // @route POST /auth/signup
 // @access Public
-const signup = asyncHandler(async (req, res, next) => {
-    const { username, email, password } = req.body;
+const signup = asyncHandler(async (req, res) => {
+    const { username, email, password, confirmPassword } = req.body;
 
     // Check if user already exists
     const userExists = await User.findOne({ email });
     if (userExists) {
         req.flash('error_msg', 'User already exists');
+        return res.status(400).redirect('/auth/signup');
+    }
+
+    if (password !== confirmPassword) {
+        req.flash('error_msg', 'Passwords do not match');
         return res.status(400).redirect('/auth/signup');
     }
 
