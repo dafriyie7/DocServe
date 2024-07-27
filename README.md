@@ -17,6 +17,9 @@ DESCRIPTION
 
     DocServe is a platform designed to streamline file management and sharing. This platform caters to both regular users and administrators, providing a comprehensive set of  features to ensure efficient document handling and secure access.
 
+    Made using the MEEN stack:
+    MongoDB, Express.js, EJS and Node.js
+
 INSTALLATION
 ..................................................
 
