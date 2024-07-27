@@ -4,18 +4,18 @@ a platform designed to streamline file management and sharing.
 
 Table of Contents
 
-Description
-Installation
-Features
-File Structure
-Technologies Used
+    Description
+    Installation
+    Features
+    File Structure
+    Technologies Used
 
 DESCRIPTION
 ....................................................
 
-WEBSITE LINK: <https://docserve.onrender.com>
+    WEBSITE LINK: <https://docserve.onrender.com>
 
-DocServe is a platform designed to streamline file management and sharing. This platform caters to both regular users and administrators, providing a comprehensive set of features to ensure efficient document handling and secure access.
+    DocServe is a platform designed to streamline file management and sharing. This platform caters to both regular users and administrators, providing a comprehensive set of  features to ensure efficient document handling and secure access.
 
 INSTALLATION
 ..................................................
