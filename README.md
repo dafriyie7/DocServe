@@ -40,10 +40,6 @@ To install dependencies, run:
 
     npm install
 
-Run the application or start server
-
-    run dev
-
 SETUP YOUR .env FILE
 
     PORT = 5000
@@ -51,7 +47,11 @@ SETUP YOUR .env FILE
     SESSION_SECRET = your_session_secret
     EMAIL_USER = your_email
     EMAIL_PASS = your_email_password
-    DROPBOX_ACCESS_TOKEN = your_dropbox_access_token```
+    DROPBOX_ACCESS_TOKEN = your_dropbox_access_token
+
+Run the application or start server
+
+    run dev
 
 ## FEATURES
 
