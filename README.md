@@ -10,7 +10,7 @@ Table of Contents
     File Structure
     Technologies Used
 
-**DESCRIPTION**
+DESCRIPTION
     WEBSITE LINK: <https://docserve.onrender.com>
 
     DocServe is a platform designed to streamline file management and sharing. This platform caters to both regular users and administrators, providing a comprehensive set of  features to ensure efficient document handling and secure access.
@@ -18,24 +18,24 @@ Table of Contents
     Made using the MEEN stack:
     MongoDB, Express.js, EJS and Node.js
 
-**INSTALLATION**
+INSTALLATION
 Prerequisites
     . mongodb and mongo url
     . email account
     . dropbox api
 
 Clone Repository
-    ```git clone <https://github.com/dafriyie7/DocServe.git>```
+    `git clone <https://github.com/dafriyie7/DocServe.git>`
     cd DocServe```
 
 TO INSTALL DEPENDENCIES
-    run: ``npm install``
+    run: `npm install`
 
 Run the application/start server
-    ``npm run dev``
+    `npm run dev`
 
 SETUP YOUR .env FILE
-    ```PORT = 5000
+    PORT = 5000
     MONGO_URL = your_mongo_url
     SESSION_SECRET = your_session_secret
     EMAIL_USER = your_email
