@@ -53,7 +53,7 @@ SETUP YOUR .env FILE
     EMAIL_PASS = your_email_password
     DROPBOX_ACCESS_TOKEN = your_dropbox_access_token```
 
-FEATURES
+## FEATURES
 
 1. User Authentication
 Features:
@@ -72,7 +72,7 @@ Features:
 
     Allow users to send files to an email through the platform.
 
-FILE STRUCTURE
+## FILE STRUCTURE
 
 - /config/
   - db.js
@@ -111,7 +111,7 @@ FILE STRUCTURE
 - README.md
 - server.js
 
-TECHNOLOGIES USED
+## TECHNOLOGIES USED
 
     Node.js
     Express.js
