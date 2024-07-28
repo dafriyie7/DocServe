@@ -10,9 +10,7 @@ Table of Contents
     File Structure
     Technologies Used
 
-DESCRIPTION
-....................................................
-
+**DESCRIPTION**
     WEBSITE LINK: <https://docserve.onrender.com>
 
     DocServe is a platform designed to streamline file management and sharing. This platform caters to both regular users and administrators, providing a comprehensive set of  features to ensure efficient document handling and secure access.
@@ -20,34 +18,32 @@ DESCRIPTION
     Made using the MEEN stack:
     MongoDB, Express.js, EJS and Node.js
 
-INSTALLATION
-..................................................
-
+**INSTALLATION**
 Prerequisites
     . mongodb and mongo url
     . email account
     . dropbox api
 
 Clone Repository
-    git clone <https://github.com/dafriyie7/DocServe.git>
-    cd DocServe
+    ```git clone <https://github.com/dafriyie7/DocServe.git>```
+    cd DocServe```
 
 TO INSTALL DEPENDENCIES
-    run: npm install
-
-SETUP YOUR .env FILE
-    PORT = 5000
-    MONGO_URL = your_mongo_url
-    SESSION_SECRET = your_session_secret
-    EMAIL_USER = your_email
-    EMAIL_PASS = your_email_password
-    DROPBOX_ACCESS_TOKEN = your_dropbox_access_token
+    run: ``npm install``
 
 Run the application/start server
-    npm run dev
+    ``npm run dev``
 
-FEATURES
-....................................................
+SETUP YOUR .env FILE
+    ```PORT = 5000```
+    ```MONGO_URL = your_mongo_url```
+    ```SESSION_SECRET = your_session_secret```
+    ```EMAIL_USER = your_email```
+    ```EMAIL_PASS = your_email_password```
+    ```DROPBOX_ACCESS_TOKEN = your_dropbox_access_token```
+
+
+*FEATURES**
 
 1. User Authentication
 Features:
@@ -66,41 +62,54 @@ Features:
 
     Allow users to send files to an email through the platform.
 
-FILE STRUCTURE
-├── config/                     // Configuration files
-│   └── db.js                   // Database connection setup
-├── controllers/                // Controllers for handling business logic
-│   ├── authController.js       // Controller for authentication related actions
-│   ├── adminController.js      // Controller for admin related actions
-│   └── fileController.js       // Controller for file handling actions
-├── middleware/                 // Middleware functions
-│   ├── authMiddleware.js       // Middleware for authentication and authorization
-│   └── errorMiddleware.js      // Middleware for handling errors
-├── models/                     // Mongoose models for MongoDB
-│   ├── userModel.js            // User schema and model definition
-│   └── fileModel.js            // File schema and model definition
-├── routes/                     // Express routes
-│   ├── authRoutes.js           // Routes for authentication (signup, login, reset password)
-│   ├── fileRoutes.js           // Routes for handling files (upload, download, delete)
-│   └── adminRoutes.js          // Routes for admin operations
-├── views/                      // EJS view templates
-│   ├── login.ejs               // Login page template
-│   ├── signup.ejs              // Signup page template
-│   ├── resetPassword.ejs       // Reset password page template
-│   ├── files/                  // File-related view templates
-│   │   ├── upload.ejs          // File upload page template
-│   │   ├── list.ejs            // List of files page template
-│   │   ├── details.ejs         // File details page template
-│   │   └── edit.ejs            // Edit file details page template
-├── public/                     // Public static assets
-│   ├── style.css               // CSS styles
-│   └── scripts.js              // Client-side JavaScript
-├── .env                        // Environment variables configuration
-├── server.js                   // Main server file
-├── package.json                // Node.js project configuration
-└── README.md                   // Project documentation and instructions
+**FILE STRUCTURE**
+/config/
+    db.js
+    dropbox.js
+    multer.js
+    passport.js
 
-Technologies used
+/controllers/
+    authController.js
+    fileController.js
+
+/er-diagram/
+    ER-DIAGRAM.drawio
+
+/middleware/
+    authMiddleware.js
+    erroMiddleware.js
+
+/models/
+    fileModel.js
+    UserModel.js
+
+/node_modules/
+    //node-files
+
+/public/
+    style.css
+    styles.css
+
+/routes/
+    authRoutes.js
+    fileRoutes.js
+
+/views
+    dashboard.ejs
+    forgot-password.ejs
+    login.ejs
+    reset-password.ejs
+    signup.ejs
+
+.env
+.gitignore
+package-lock.json
+package.json
+README.md
+server.js
+
+**Technologies used**
     Node.js
     Express.js
     Mongoose
