@@ -31,16 +31,16 @@ DocServe is a platform designed to streamline file management and sharing. This 
 - Email account
 - Dropbox API
 
-### Clone Repository
+Clone Repository
 
 git clone https://github.com/dafriyie7/DocServe.git
 cd DocServe
 
-TO INSTALL DEPENDENCIES
+To install dependencies, run:
 
     npm install
 
-Run the application/start server
+Run the application or start server
 
     run dev
 
