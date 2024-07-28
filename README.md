@@ -74,42 +74,42 @@ Features:
 
 FILE STRUCTURE
 
-- `/config/`
-  - `db.js`
-  - `dropbox.js`
-  - `multer.js`
-  - `passport.js`
-- `/controllers/`
-  - `authController.js`
-  - `fileController.js`
-- `/er-diagram/`
-  - `ER-DIAGRAM.drawio`
-- `/middleware/`
-  - `authMiddleware.js`
-  - `errorMiddleware.js`
-- `/models/`
-  - `fileModel.js`
-  - `UserModel.js`
-- `/node_modules/`
-  - `// node-files`
-- `/public/`
-  - `style.css`
-  - `styles.css`
-- `/routes/`
-  - `authRoutes.js`
-  - `fileRoutes.js`
-- `/views/`
-  - `dashboard.ejs`
-  - `forgot-password.ejs`
-  - `login.ejs`
-  - `reset-password.ejs`
-  - `signup.ejs`
-- `.env`
-- `.gitignore`
-- `package-lock.json`
-- `package.json`
-- `README.md`
-- `server.js`
+- /config/
+  - db.js
+  - dropbox.js
+  - multer.js
+  - passport.js
+- /controllers/
+  - authController.js
+  - fileController.js
+- /er-diagram/
+  - ER-DIAGRAM.drawio
+- /middleware/
+  - authMiddleware.js
+  - errorMiddleware.js
+- /models/
+  - fileModel.js
+  - UserModel.js
+- /node_modules/
+  - // node-files
+- /public/
+  - style.css
+  - styles.css
+- /routes/
+  - authRoutes.js
+  - fileRoutes.js
+- /views/
+  - dashboard.ejs
+  - forgot-password.ejs
+  - login.ejs
+  - reset-password.ejs
+  - signup.ejs
+- .env
+- .gitignore
+- package-lock.json
+- package.json
+- README.md
+- server.js
 
 TECHNOLOGIES USED
 
