@@ -33,8 +33,8 @@ DocServe is a platform designed to streamline file management and sharing. This 
 
 Clone Repository
 
-`git clone https://github.com/dafriyie7/DocServe.git`
-cd DocServe
+`git clone https://github.com/dafriyie7/DocServe.git
+cd DocServe`
 
 To install dependencies, run:
 
