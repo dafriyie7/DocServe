@@ -25,14 +25,15 @@ Prerequisites
     . dropbox api
 
 Clone Repository
-    `git clone <https://github.com/dafriyie7/DocServe.git>`
-    cd DocServe```
+
+    git clone <https://github.com/dafriyie7/DocServe.git>
+    cd DocServe
 
 TO INSTALL DEPENDENCIES
-    run: `npm install`
+    run: npm install
 
 Run the application/start server
-    `npm run dev`
+    npm run dev
 
 SETUP YOUR .env FILE
 
@@ -42,7 +43,6 @@ SETUP YOUR .env FILE
     EMAIL_USER = your_email
     EMAIL_PASS = your_email_password
     DROPBOX_ACCESS_TOKEN = your_dropbox_access_token```
-
 
 FEATURES
 
