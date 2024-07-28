@@ -33,14 +33,14 @@ DocServe is a platform designed to streamline file management and sharing. This 
 
 Clone Repository
 
-`git clone https://github.com/dafriyie7/DocServe.git
-cd DocServe`
+git clone <https://github.com/dafriyie7/DocServe.git>
+cd DocServe
 
 To install dependencies, run:
 
     npm install
 
-SETUP YOUR .env FILE
+Setup '.env' file
 
     PORT = 5000
     MONGO_URL = your_mongo_url
