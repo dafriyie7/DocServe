@@ -35,12 +35,12 @@ Run the application/start server
     ``npm run dev``
 
 SETUP YOUR .env FILE
-    ```PORT = 5000```
-    ```MONGO_URL = your_mongo_url```
-    ```SESSION_SECRET = your_session_secret```
-    ```EMAIL_USER = your_email```
-    ```EMAIL_PASS = your_email_password```
-    ```DROPBOX_ACCESS_TOKEN = your_dropbox_access_token```
+    ```PORT = 5000
+    MONGO_URL = your_mongo_url
+    SESSION_SECRET = your_session_secret
+    EMAIL_USER = your_email
+    EMAIL_PASS = your_email_password
+    DROPBOX_ACCESS_TOKEN = your_dropbox_access_token```
 
 
 *FEATURES**
@@ -63,6 +63,7 @@ Features:
     Allow users to send files to an email through the platform.
 
 **FILE STRUCTURE**
+
 /config/
     db.js
     dropbox.js
