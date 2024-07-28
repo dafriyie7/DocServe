@@ -37,9 +37,11 @@ DocServe is a platform designed to streamline file management and sharing. This 
 cd DocServe`
 
 TO INSTALL DEPENDENCIES
+
     run: npm install
 
 Run the application/start server
+
     npm run dev
 
 SETUP YOUR .env FILE
