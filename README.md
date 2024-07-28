@@ -33,9 +33,9 @@ DocServe is a platform designed to streamline file management and sharing. This 
 
 ### Clone Repository
 
-``sh
+`sh
 git clone https://github.com/dafriyie7/DocServe.git
-cd DocServe``
+cd DocServe`
 
 TO INSTALL DEPENDENCIES
     run: npm install
