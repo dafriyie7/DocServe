@@ -1,33 +1,41 @@
 # DocServe
 
-a platform designed to streamline file management and sharing.
+A platform designed to streamline file management and sharing.
 
-Table of Contents
+## Table of Contents
 
-    Description
-    Installation
-    Features
-    File Structure
-    Technologies Used
+- [Description](#description)
+- [Installation](#installation)
+- [Features](#features)
+- [File Structure](#file-structure)
+- [Technologies Used](#technologies-used)
 
-DESCRIPTION
-    WEBSITE LINK: <https://docserve.onrender.com>
+## Description
 
-    DocServe is a platform designed to streamline file management and sharing. This platform caters to both regular users and administrators, providing a comprehensive set of  features to ensure efficient document handling and secure access.
+**Website Link:** [DocServe](https://docserve.onrender.com)
 
-    Made using the MEEN stack:
-    MongoDB, Express.js, EJS and Node.js
+DocServe is a platform designed to streamline file management and sharing. This platform caters to both regular users and administrators, providing a comprehensive set of features to ensure efficient document handling and secure access.
 
-INSTALLATION
-Prerequisites
-    . mongodb and mongo url
-    . email account
-    . dropbox api
+**Made using the MEEN stack:**
 
-Clone Repository
+- MongoDB
+- Express.js
+- EJS
+- Node.js
 
-    git clone <https://github.com/dafriyie7/DocServe.git>
-    cd DocServe
+## Installation
+
+### Prerequisites
+
+- MongoDB and Mongo URL
+- Email account
+- Dropbox API
+
+### Clone Repository
+
+```sh
+git clone https://github.com/dafriyie7/DocServe.git
+cd DocServe
 
 TO INSTALL DEPENDENCIES
     run: npm install
