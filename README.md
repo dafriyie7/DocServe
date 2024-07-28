@@ -33,16 +33,16 @@ DocServe is a platform designed to streamline file management and sharing. This 
 
 ### Clone Repository
 
-`git clone https://github.com/dafriyie7/DocServe.git
-cd DocServe`
+git clone https://github.com/dafriyie7/DocServe.git
+cd DocServe
 
 TO INSTALL DEPENDENCIES
 
-    run: npm install
+    npm install
 
 Run the application/start server
 
-    npm run dev
+    run dev
 
 SETUP YOUR .env FILE
 
@@ -111,7 +111,8 @@ FILE STRUCTURE
 - `README.md`
 - `server.js`
 
-echnologies used
+TECHNOLOGIES USED
+
     Node.js
     Express.js
     Mongoose
