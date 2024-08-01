@@ -29,7 +29,7 @@ DocServe is a platform designed to streamline file management and sharing. This 
 
 - MongoDB and Mongo URL
 - Email account
-- Dropbox API
+- Dropbox SDK
 
 Clone Repository
 
